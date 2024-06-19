@@ -1,8 +1,9 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
+import { getCookie } from '../../utils/cookie';
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export const ResetPassword: FC = () => {
       navigate('/forgot-password', { replace: true });
     }
   }, [navigate]);
+
+  console.log(getCookie('accessToken'));
 
   return (
     <ResetPasswordUI
