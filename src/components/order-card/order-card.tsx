@@ -10,8 +10,6 @@ import { ingredientsSelectors } from '../../services/slices/ingredientsSlice';
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
-  console.log(order.ingredients);
-
   const location = useLocation();
 
   const ingredients: TIngredient[] = useSelector<TIngredient[]>(
@@ -23,8 +21,6 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
 
     const ingredientsInfo = order.ingredients.reduce(
       (acc: TIngredient[], item: string) => {
-        console.log(item);
-
         const ingredient = ingredients.find((ing) => ing._id === item);
 
         if (ingredient) return [...acc, ingredient];
@@ -32,8 +28,6 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
       },
       []
     );
-
-    console.log(ingredientsInfo);
 
     const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
 

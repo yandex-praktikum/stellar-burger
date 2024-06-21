@@ -1,13 +1,14 @@
 import {
   getUser,
   loginUser,
+  logoutUser,
   registerUser,
   updateUser
 } from './../thunks/userThunks';
 import { createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 
-interface TUserState {
+interface IUserState {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   userData: TUser | null;
@@ -15,7 +16,7 @@ interface TUserState {
   isLoading: boolean;
 }
 
-const initialState: TUserState = {
+const initialState: IUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   userData: null,
@@ -45,16 +46,17 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
+        state.isAuthChecked = true;
         state.isAuthenticated = false;
         state.isLoading = true;
       })
       .addCase(registerUser.rejected, (state) => {
-        state.isAuthenticated = false;
+        state.isAuthChecked = true;
         state.isLoading = false;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.userData = action.payload.user;
-        state.isAuthChecked = true;
+        state.isAuthChecked = false;
         state.isAuthenticated = true;
         state.isLoading = true;
       })

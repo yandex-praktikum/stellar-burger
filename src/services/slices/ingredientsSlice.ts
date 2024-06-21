@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { fetchIngredients } from '../thunks/ingredientsThunks';
 
-interface IngredientsListState {
+interface IIngredientsState {
   ingredients: TIngredient[];
   isLoading: boolean;
 }
 
-const initialState: IngredientsListState = {
+const initialState: IIngredientsState = {
   ingredients: [],
   isLoading: true
 };

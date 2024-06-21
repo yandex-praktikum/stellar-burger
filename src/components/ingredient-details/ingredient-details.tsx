@@ -14,8 +14,9 @@ export const IngredientDetails: FC = () => {
   );
 
   const params = useParams();
+  console.log(params);
 
-  const id: string | undefined = params.id;
+  const id = params.id;
 
   const ingredientData = ingredientsList.find(
     (ingredient) => ingredient._id === id

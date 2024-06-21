@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { orderBurger } from '../thunks/orderThunks';
-import { getOrders } from '../thunks/ordersThunks';
+import { getOrdersAll } from '../thunks/ordersThunks';
 
-interface TOrdersState {
+interface IOrdersState {
   orders: TOrder[];
 }
 
-const initialState: TOrdersState = {
+const initialState: IOrdersState = {
   orders: []
 };
 
@@ -30,8 +30,8 @@ export const ordersSlice = createSlice({
           state.orders.push(action.payload);
         }
       )
-      .addCase(getOrders.fulfilled, (state, action) => {
-        state.orders = action.payload;
+      .addCase(getOrdersAll.fulfilled, (state, action) => {
+        state.orders = action.payload.orders;
       });
   }
 });

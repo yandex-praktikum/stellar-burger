@@ -2,12 +2,12 @@ import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { orderBurger } from '../thunks/orderThunks';
 
-interface BurgerConstructorState {
+interface IBurgerConstructorState {
   bun: TConstructorIngredient | null;
   burgerConstructoringredients: TConstructorIngredient[];
 }
 
-const initialState: BurgerConstructorState = {
+const initialState: IBurgerConstructorState = {
   bun: null,
   burgerConstructoringredients: []
 };

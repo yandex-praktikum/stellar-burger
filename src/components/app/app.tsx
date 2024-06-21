@@ -39,7 +39,7 @@ const App = () => {
     } else {
       dispatch(userActions.userInit());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -48,6 +48,8 @@ const App = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/profile/orders/:number' element={<OrderInfo />} />
         <Route
           path='/login'
           element={

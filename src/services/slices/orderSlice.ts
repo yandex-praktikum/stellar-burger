@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { orderBurger } from '../thunks/orderThunks';
+import { getOrderByNumber, orderBurger } from '../thunks/orderThunks';
 
-interface TOrderState {
+interface IOrderState {
   orderData: TOrder | null;
   isOrderRequest: boolean;
   isReady: boolean;
+  orderByNumber: TOrder | null;
   isLoading: boolean;
 }
 
-const initialState: TOrderState = {
+const initialState: IOrderState = {
   orderData: null,
   isOrderRequest: false,
   isReady: false,
+  orderByNumber: null,
   isLoading: true
 };
 
@@ -28,7 +30,8 @@ export const orderSlice = createSlice({
   selectors: {
     selectIsOrderRequest: (state) => state.isOrderRequest,
     selectIsReady: (state) => state.isReady,
-    selectOrderData: (state) => state.orderData
+    selectOrderData: (state) => state.orderData,
+    selectOrderByNumber: (state) => state.orderByNumber
   },
   extraReducers: (builder) => {
     builder
@@ -47,6 +50,9 @@ export const orderSlice = createSlice({
         state.isReady = true;
         state.orderData = action.payload;
         state.isLoading = false;
+      })
+      .addCase(getOrderByNumber.fulfilled, (state, action) => {
+        state.orderByNumber = action.payload[0];
       });
   }
 });

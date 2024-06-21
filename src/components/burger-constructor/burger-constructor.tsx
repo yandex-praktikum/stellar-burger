@@ -19,12 +19,7 @@ export const BurgerConstructor: FC = () => {
   >(burgerConstructorSelectors.selectIngredients);
 
   const constructorItems = {
-    bun: {
-      id: bun?._id!,
-      price: bun?.price! ? bun.price : 0,
-      name: bun?.name! ? bun.name : 'Выберите булки',
-      image: bun?.image! ? bun.image : null
-    },
+    bun: bun!,
     ingredients: ingredients
   };
 

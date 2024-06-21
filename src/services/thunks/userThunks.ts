@@ -3,7 +3,8 @@ import {
   loginUserApi,
   TRegisterData,
   registerUserApi,
-  updateUserApi
+  updateUserApi,
+  logoutApi
 } from './../../utils/burger-api';
 import { getUserApi } from '@api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -41,3 +42,8 @@ export const updateUser = createAsyncThunk(
     return { email, name };
   }
 );
+
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  const userData = await logoutApi();
+  return userData;
+});
