@@ -90,7 +90,7 @@ export const userSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(getUser.rejected, (state) => {
-        state.isAuthChecked = false;
+        state.isAuthChecked = true;
         state.isAuthenticated = false;
       })
       .addCase(getUser.fulfilled, (state, action) => {
