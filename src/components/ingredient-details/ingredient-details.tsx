@@ -13,14 +13,15 @@ export const IngredientDetails: FC = () => {
     ingredientsSelectors.selectIngredients
   );
 
+  const isLoading = useSelector(ingredientsSelectors.selectIsLoading);
+
   const params = useParams();
-  console.log(params);
 
   const id = params.id;
 
   const ingredientData = ingredientsList.find(
     (ingredient) => ingredient._id === id
-  );
+  )!;
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,7 +29,7 @@ export const IngredientDetails: FC = () => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
-  if (!ingredientData) {
+  if (isLoading) {
     return <Preloader />;
   }
 

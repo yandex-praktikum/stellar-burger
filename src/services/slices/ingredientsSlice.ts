@@ -9,7 +9,7 @@ interface IIngredientsState {
 
 const initialState: IIngredientsState = {
   ingredients: [],
-  isLoading: true
+  isLoading: false
 };
 
 export const ingredientsSlice = createSlice({

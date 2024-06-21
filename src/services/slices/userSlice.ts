@@ -13,7 +13,7 @@ interface IUserState {
   isAuthenticated: boolean;
   userData: TUser | null;
   loginUserRequest: boolean;
-  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: IUserState = {
@@ -21,7 +21,7 @@ const initialState: IUserState = {
   isAuthenticated: false,
   userData: null,
   loginUserRequest: false,
-  isLoading: true
+  error: null
 };
 
 export const userSlice = createSlice({
@@ -41,63 +41,78 @@ export const userSlice = createSlice({
   selectors: {
     selectUserData: (state) => state.userData,
     selectIsAuthChecked: (state) => state.isAuthChecked,
-    selectIsLoading: (state) => state.isLoading
+    selectError: (state) => state.error
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.isAuthChecked = true;
         state.isAuthenticated = false;
-        state.isLoading = true;
+        state.error = null;
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.isAuthChecked = true;
-        state.isLoading = false;
+        state.error = action.error.message as string;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.userData = action.payload.user;
-        state.isAuthChecked = false;
+        state.isAuthChecked = true;
         state.isAuthenticated = true;
-        state.isLoading = true;
+        state.error = null;
       })
       .addCase(loginUser.pending, (state) => {
         state.loginUserRequest = true;
-        state.isLoading = true;
+        state.error = null;
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loginUserRequest = false;
         state.isAuthChecked = true;
-        state.isLoading = false;
+        state.error = action.error.message as string;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.userData = action.payload.user;
         state.isAuthChecked = true;
         state.isAuthenticated = true;
-        state.isLoading = false;
+        state.error = null;
       })
       .addCase(updateUser.pending, (state) => {
-        state.isLoading = true;
+        state.error = null;
       })
-      .addCase(updateUser.rejected, (state) => {
-        state.isLoading = false;
+      .addCase(updateUser.rejected, (state, action) => {
+        state.error = action.error.message as string;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.userData = action.payload;
-        state.isLoading = true;
+        state.error = null;
       })
       .addCase(getUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getUser.rejected, (state) => {
         state.isAuthChecked = true;
         state.isAuthenticated = true;
-        state.isLoading = false;
+      })
+      .addCase(getUser.rejected, (state) => {
+        state.isAuthChecked = false;
+        state.isAuthenticated = false;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.isAuthChecked = true;
         state.isAuthenticated = true;
         state.userData = action.payload.user;
-        state.isLoading = true;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.isAuthChecked = true;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isAuthChecked = false;
+        state.isAuthenticated = true;
+        state.error = action.error.message as string;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isAuthChecked = true;
+        state.isAuthenticated = false;
+        state.userData = null;
+        state.error = null;
       });
   }
 });

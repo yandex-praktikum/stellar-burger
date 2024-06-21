@@ -28,6 +28,33 @@ export const burgerConstructorSlice = createSlice({
         const id = nanoid();
         return { payload: { ...ingredient, id } };
       }
+    },
+    moveIngredientDown: (state, action: PayloadAction<number>) => {
+      [
+        state.burgerConstructoringredients[action.payload],
+        state.burgerConstructoringredients[action.payload + 1]
+      ] = [
+        state.burgerConstructoringredients[action.payload + 1],
+        state.burgerConstructoringredients[action.payload]
+      ];
+    },
+    moveIngredientUp: (state, action: PayloadAction<number>) => {
+      [
+        state.burgerConstructoringredients[action.payload],
+        state.burgerConstructoringredients[action.payload - 1]
+      ] = [
+        state.burgerConstructoringredients[action.payload - 1],
+        state.burgerConstructoringredients[action.payload]
+      ];
+    },
+    removeIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      state.burgerConstructoringredients =
+        state.burgerConstructoringredients.filter(
+          (ingredient) => ingredient.id !== action.payload.id
+        );
     }
   },
   selectors: {

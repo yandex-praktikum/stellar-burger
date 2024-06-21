@@ -17,8 +17,6 @@ import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/thunks/ingredientsThunks';
 import { ProtectedRoute } from '../protectedRoute/protectedRoute';
-import { getCookie } from '../../utils/cookie';
-import { userActions } from '../../services/slices/userSlice';
 import { getUser } from '../../services/thunks/userThunks';
 
 const App = () => {
@@ -30,15 +28,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const accessToken = getCookie('accessToken');
-
     dispatch(fetchIngredients());
-
-    if (accessToken) {
-      dispatch(getUser());
-    } else {
-      dispatch(userActions.userInit());
-    }
+    dispatch(getUser());
   }, [dispatch]);
 
   return (
@@ -49,7 +40,14 @@ const App = () => {
         <Route path='/feed' element={<Feed />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/profile/orders/:number' element={<OrderInfo />} />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path='/login'
           element={
@@ -122,9 +120,11 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
+              <ProtectedRoute>
+                <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>

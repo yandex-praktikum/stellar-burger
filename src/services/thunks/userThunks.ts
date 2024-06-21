@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }: TLoginData) => {
     const userData = await loginUserApi({ email, password });
     setCookie('accessToken', userData.accessToken);
-    setCookie('refreshToken', userData.refreshToken);
+    localStorage.setItem('refreshToken', userData.refreshToken);
     return userData;
   }
 );
@@ -29,8 +29,6 @@ export const registerUser = createAsyncThunk(
   'user/registerUser',
   async ({ email, name, password }: TRegisterData) => {
     const userData = await registerUserApi({ email, name, password });
-    setCookie('accessToken', userData.accessToken);
-    setCookie('refreshToken', userData.refreshToken);
     return userData;
   }
 );

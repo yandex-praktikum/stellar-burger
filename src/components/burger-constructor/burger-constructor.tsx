@@ -39,7 +39,7 @@ export const BurgerConstructor: FC = () => {
       navigate('/login');
     }
 
-    const bunId: string = constructorItems.bun!.id;
+    const bunId: string = constructorItems.bun!._id;
     const ingredientsIds: string[] = constructorItems.ingredients.map(
       (ingredient: TIngredient) => ingredient._id
     );

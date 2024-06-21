@@ -6,14 +6,12 @@ interface IFeedState {
   orders: TOrder[];
   total: number;
   totalToday: number;
-  isLoading: boolean;
 }
 
 const initialState: IFeedState = {
   orders: [],
   total: 0,
-  totalToday: 0,
-  isLoading: false
+  totalToday: 0
 };
 
 export const feedsSlice = createSlice({
@@ -23,23 +21,14 @@ export const feedsSlice = createSlice({
   selectors: {
     selectFeeds: (state) => state.orders,
     selectTotalFeeds: (state) => state.total,
-    selectTotalTodayFeeds: (state) => state.totalToday,
-    selectIsLoading: (state) => state.isLoading
+    selectTotalTodayFeeds: (state) => state.totalToday
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getFeeds.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getFeeds.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(getFeeds.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.orders = action.payload.orders;
-        state.total = action.payload.total;
-        state.totalToday = action.payload.totalToday;
-      });
+    builder.addCase(getFeeds.fulfilled, (state, action) => {
+      state.orders = action.payload.orders;
+      state.total = action.payload.total;
+      state.totalToday = action.payload.totalToday;
+    });
   }
 });
 

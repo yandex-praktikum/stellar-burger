@@ -8,7 +8,6 @@ import { getFeeds } from '../../services/thunks/feedThunks';
 
 export const Feed: FC = () => {
   const orders: TOrder[] = useSelector(feedsSelectors.selectFeeds);
-  const isLoading: boolean = useSelector(feedsSelectors.selectIsLoading);
 
   const dispatch = useDispatch();
 
