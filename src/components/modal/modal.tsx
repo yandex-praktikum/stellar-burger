@@ -1,27 +1,44 @@
-import { FC, memo, useEffect } from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { ModalOverlay } from '../modal-overlay/modal-overlay';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+const modalsContainer = document.querySelector('#modals') as HTMLElement;
 
-import { TModalProps } from './type';
-import { ModalUI } from '@ui';
+interface IModalProps {
+    children: React.ReactNode,
+    onClose: () => void
+}
 
-const modalRoot = document.getElementById('modals');
+const Modal: FC<IModalProps> = ({ children, onClose }) => {
 
-export const Modal: FC<TModalProps> = memo(({ title, onClose, children }) => {
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      e.key === 'Escape' && onClose();
-    };
+    React.useEffect(() => {
+        document.addEventListener('keydown', handleEscKeydown);
+        return () => {
+            document.removeEventListener('keydown', handleEscKeydown);
+        }
+    }, []);
 
-    document.addEventListener('keydown', handleEsc);
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-    };
-  }, [onClose]);
+    const handleEscKeydown = (e: { key: string }) => {
+        e.key === 'Escape' && onClose();
+    }
 
-  return ReactDOM.createPortal(
-    <ModalUI title={title} onClose={onClose}>
-      {children}
-    </ModalUI>,
-    modalRoot as HTMLDivElement
-  );
-});
+    return ReactDOM.createPortal(
+        <>
+            <div className={`modal`}>
+                <div className={`modal__button_type_close`}>
+                    <CloseIcon type="primary" onClick={onClose} />
+                </div>
+                {children}
+            </div>
+            <ModalOverlay onClick={onClose} />
+        </>,
+        modalsContainer
+    )
+}
+
+Modal.propTypes = {
+    children: PropTypes.node.isRequired,
+}
+
+export default Modal;
