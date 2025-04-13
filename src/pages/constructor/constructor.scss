@@ -1,0 +1,12 @@
+.constructor {
+    max-width: 1240px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 40px;
+    margin: 0 auto;
+
+    &__column {
+        width: 600px;
+    }
+}
