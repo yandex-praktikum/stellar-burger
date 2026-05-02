@@ -1,0 +1,78 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { TOrder } from '@utils-types';
+import { orderBurgerApi, getOrderByNumberApi } from '@api';
+
+type TOrderState = {
+  order: TOrder | null;
+  orderRequest: boolean;
+  orderModalData: TOrder | null;
+  orderByNumber: TOrder | null;
+  error: string | null;
+};
+
+const initialState: TOrderState = {
+  order: null,
+  orderRequest: false,
+  orderModalData: null,
+  orderByNumber: null,
+  error: null
+};
+
+export const createOrder = createAsyncThunk(
+  'order/createOrder',
+  async (ingredients: string[]) => {
+    const response = await orderBurgerApi(ingredients);
+    return response.order;
+  }
+);
+
+export const fetchOrderByNumber = createAsyncThunk(
+  'order/fetchOrderByNumber',
+  async (number: number) => {
+    const response = await getOrderByNumberApi(number);
+    return response.orders[0];
+  }
+);
+
+const orderSlice = createSlice({
+  name: 'order',
+  initialState,
+  reducers: {
+    clearOrder: (state) => {
+      state.order = null;
+      state.orderModalData = null;
+      state.orderByNumber = null;
+      state.error = null;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.pending, (state) => {
+        state.orderRequest = true;
+        state.error = null;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.order = action.payload;
+        state.orderModalData = action.payload;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.error = action.error.message || 'Ошибка создания заказа';
+      })
+      .addCase(fetchOrderByNumber.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderByNumber = action.payload;
+      })
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.error = action.error.message || 'Ошибка загрузки заказа';
+      });
+  }
+});
+
+export const { clearOrder } = orderSlice.actions;
+export default orderSlice.reducer;
