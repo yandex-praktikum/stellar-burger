@@ -1,7 +1,5 @@
 import { useSelector } from '../../services/store';
-
 import styles from './constructor-page.module.css';
-
 import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
@@ -11,6 +9,8 @@ export const ConstructorPage: FC = () => {
   const isIngredientsLoading = useSelector(
     (state) => state.ingredients.isLoading
   );
+
+  // useEffect и dispatch удалены, так как загрузка теперь происходит в App.tsx
 
   return (
     <>
